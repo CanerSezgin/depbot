@@ -1,0 +1,36 @@
+{
+  "name": "depbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint:tsc": "tsc",
+    "lint:eslint": "eslint 'src/**/*.ts'",
+    "lint": "yarn lint:tsc && yarn lint:eslint",
+    "format": "prettier --write 'src/**/*.ts' && yarn lint:eslint --fix"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.5.0",
+    "@typescript-eslint/parser": "^3.5.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CanerSezgin/depbot.git"
+  },
+  "author": "Caner Sezgin <ccanersezgin@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CanerSezgin/depbot/issues"
+  },
+  "homepage": "https://github.com/CanerSezgin/depbot#readme"
+}

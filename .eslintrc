@@ -1,0 +1,24 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "plugin:eslint-comments/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "eslint-comments"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "eslint-comments/no-unused-disable": "error",
+  }
+}
