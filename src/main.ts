@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import semver from 'semver';
+import getNpmPackage from './utils/npmRegistery';
 
 const username = 'snipe';
 const repo = 'snipe-it';
@@ -49,6 +50,8 @@ const getComposerJsonDependencies = (content: ComposerJson) => {
 };
 
 const main = async () => {
+  const npmPackage = await getNpmPackage('axios');
+  console.log(npmPackage.version)
   throw new Error('hi');
   const packageJson = (await getFileFromGithub(username, repo, 'package.json')) as PackageJson;
   const composerJson = (await getFileFromGithub(username, repo, 'composer.json')) as ComposerJson;
