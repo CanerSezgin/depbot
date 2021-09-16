@@ -1,13 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import semver from 'semver';
-import getNpmPackage from './utils/npmRegistery';
+import getNpmPackage from './services/npmRegistery';
+
+import { client } from './lib/redis';
+import { cached } from './utils/cache';
 
 const username = 'snipe';
 const repo = 'snipe-it';
-
-type UnknownObj = {
-  [key: string]: any;
-};
 
 interface GithubFileResponse {
   name: string;
@@ -17,13 +16,13 @@ interface GithubFileResponse {
 }
 
 interface PackageJson {
-  devDependencies: UnknownObj;
-  dependencies: UnknownObj;
+  devDependencies: Global.UnknownObj;
+  dependencies: Global.UnknownObj;
 }
 
 interface ComposerJson {
-  require: UnknownObj;
-  'require-dev': UnknownObj;
+  require: Global.UnknownObj;
+  'require-dev': Global.UnknownObj;
 }
 
 const isVersionUpToDate = (currentVersion: string, latestVersion: string): boolean => {
@@ -34,12 +33,14 @@ const getFileFromGithub = async (
   userName: string,
   repoName: string,
   filePath: string,
-): Promise<string | UnknownObj> => {
+): Promise<string | Global.UnknownObj> => {
   const url = `https://api.github.com/repos/${userName}/${repoName}/contents/${filePath}`;
   const response: AxiosResponse<GithubFileResponse> = await axios.get(url);
   const encodedContent = Buffer.from(response.data.content, 'base64').toString();
 
-  return filePath.includes('.json') ? (JSON.parse(encodedContent) as UnknownObj) : encodedContent;
+  return filePath.includes('.json')
+    ? (JSON.parse(encodedContent) as Global.UnknownObj)
+    : encodedContent;
 };
 
 const getPackageJsonDependencies = (content: PackageJson) => {
@@ -50,8 +51,11 @@ const getComposerJsonDependencies = (content: ComposerJson) => {
 };
 
 const main = async () => {
-  const npmPackage = await getNpmPackage('axios');
-  console.log(npmPackage.version)
+  // const npmPackage = await getNpmPackage('axios');
+  console.log(typeof client)
+  //const r = client.del('package_axios');
+  await cached({ key: 'package_axios', expire: 5 }, getNpmPackage, ['axios']);
+  //console.log({ r });
   throw new Error('hi');
   const packageJson = (await getFileFromGithub(username, repo, 'package.json')) as PackageJson;
   const composerJson = (await getFileFromGithub(username, repo, 'composer.json')) as ComposerJson;
