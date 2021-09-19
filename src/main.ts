@@ -1,29 +1,12 @@
-import axios, { AxiosResponse } from 'axios';
 import Dependencies from './services/dependency/dependencies';
 
 const mockData = {
   repo: 'snipe/snipe-it',
 };
 
-interface GithubFileResponse {
-  name: string;
-  path: string;
-  content: string;
-  encoding: string;
-}
 
-const getFileFromGithub = async (
-  repo: string,
-  filePath: string,
-): Promise<string | Global.UnknownObj<any>> => {
-  const url = `https://api.github.com/repos/${repo}/contents/${filePath}`;
-  const response: AxiosResponse<GithubFileResponse> = await axios.get(url);
-  const encodedContent = Buffer.from(response.data.content, 'base64').toString();
 
-  return filePath.includes('.json')
-    ? (JSON.parse(encodedContent) as Global.UnknownObj<any>)
-    : encodedContent;
-};
+
 
 /* const getComposerJsonDependencies = (content: ComposerJson) => {
   return { ...content.require, ...content['require-dev'] };

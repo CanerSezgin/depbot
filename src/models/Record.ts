@@ -34,18 +34,10 @@ const recordSchema = new mongoose.Schema<RecordDoc>(
   { timestamps: true },
 );
 
-export const Record = mongoose.model<RecordDoc, RecordModel>('Record', recordSchema);
-
 recordSchema.statics.build = (attrs: RecordAttrs) => {
   return new Record(attrs);
 };
 
-recordSchema.index({ email: 1, repo: 1 }, { unique: true });
+export const Record = mongoose.model<RecordDoc, RecordModel>('Record', recordSchema);
 
-recordSchema.pre('save', function (done) {
-  if (this.isNew) {
-    console.log(this.get('email'));
-    this.set('sendEmailTime', '18:27');
-  }
-  done();
-});
+recordSchema.index({ email: 1, repo: 1 }, { unique: true });

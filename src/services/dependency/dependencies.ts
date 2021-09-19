@@ -1,9 +1,13 @@
+import { Registry } from '../registries';
 import Dependency from './dependency';
 
 export default class Dependencies {
-  constructor(public dependencies: Dependency[]) {}
+  constructor(public list: Dependency[]) {}
 
-  static async build(dependencyMap: Global.UnknownObj<string>): Promise<Dependencies> {
+  static async build(
+    dependencyMap: Global.UnknownObj<string>,
+    registry: Registry,
+  ): Promise<Dependencies> {
     /* Enhancement Point: 
       Throwing countless (for unknown number of dependencies) parallel requests can be dangerous. 
       Creating some chunks and handle those one by one would be suggested.
@@ -14,14 +18,14 @@ export default class Dependencies {
     */
     const dependencies = await Promise.all(
       Object.entries(dependencyMap).map(async ([key, curVersion]) =>
-        Dependency.build(key, curVersion),
+        Dependency.build(key, curVersion, registry),
       ),
     );
     return new Dependencies(dependencies);
   }
 
   get staleDependencies(): Dependency[] {
-    return this.dependencies.filter((dependency) => !dependency.isUpToDate);
+    return this.list.filter((dependency) => !dependency.isUpToDate);
   }
 
   get noOfStaleDependencies(): number {
@@ -29,6 +33,6 @@ export default class Dependencies {
   }
 
   get noOfDependencies(): number {
-    return this.dependencies.length;
+    return this.list.length;
   }
 }

@@ -9,7 +9,7 @@ interface CacheConfig {
 export const cached = async <T>(
   cacheConfig: CacheConfig,
   cb: (...args: any[]) => Promise<T>,
-  ...args: any[]
+  args: any[],
 ): Promise<T> => {
   const cachedData = await redis.getAsync(cacheConfig.key);
 

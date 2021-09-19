@@ -1,5 +1,5 @@
 import semver from 'semver';
-import getNpmPackage from '../npmRegistery';
+import { Registry, getPackage } from '../registries';
 import { cached } from '../../utils/cache';
 
 export default class Dependency {
@@ -10,18 +10,24 @@ export default class Dependency {
     public isUpToDate: boolean,
   ) {}
 
-  static async build(key: string, curVersion: string): Promise<Dependency> {
-    const details = await this.getDependencyDetails(key);
+  static async build(key: string, curVersion: string, registry: Registry): Promise<Dependency> {
+    const details = await this.getDependencyDetails(key, registry);
     const { version: latestVersion } = details;
     const isUpToDate = this.checkVersions(latestVersion, curVersion);
     return new Dependency(key, curVersion, latestVersion, isUpToDate);
   }
 
-  static async getDependencyDetails(key: string) {
-    return cached({ key: `package_${key}`, expire: 50 }, getNpmPackage, [key]);
+  static async getDependencyDetails(key: string, registry: Registry) {
+    return cached({ key: `package_${key}`, expire: 50 }, getPackage, [key, registry]);
   }
 
   static checkVersions(latestVersion: string, currentVersion: string): boolean {
+    // If latestVersion is not fetched for some reason, we will assume current version is up-to-date
+    if (!latestVersion) return true;
+
+    // If currentVersion is '*', we will it is always up-to-date
+    if (currentVersion === '*') return true;
+
     return semver.satisfies(latestVersion, currentVersion);
   }
 }

@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
-import validationMiddleware from 'src/middlewares/validation.middleware';
+import validationMiddleware from '../middlewares/validation.middleware';
 import recordService from '../services/record';
 
 interface EmailRepo {
@@ -15,12 +15,20 @@ const validations = [
   body('repo').trim().notEmpty().withMessage('You must supply a repo handle'),
 ];
 
-router.post('/', [...validations, validationMiddleware], async (req: Request, res: Response) => {
-  const { email, repo } = req.body as EmailRepo;
+router.post(
+  '/',
+  [...validations, validationMiddleware],
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, repo } = req.body as EmailRepo;
 
-  const record = await recordService.create(email, repo);
+      const record = await recordService.create(email, repo);
 
-  res.status(200).json({ record });
-});
+      res.status(200).json({ record });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 export default router;
