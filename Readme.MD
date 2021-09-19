@@ -18,7 +18,7 @@
 }
 ```
 
-- Get Dependencies
+- Get Dependencies <br>
   Tries to fetch `SupportedFiles: [package.json, composer.json]`, get dependencies from each SupportedFile and return stale Dependencies with additional file information.
 
 [ POST ] `/api/repo/dependencies`
