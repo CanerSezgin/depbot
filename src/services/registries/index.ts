@@ -2,8 +2,8 @@ import npm from './npm';
 import packagist from './packagist';
 
 export enum Registry {
-  'npm',
-  'packagist',
+  'npm' = 'npm',
+  'packagist' = 'packagist',
 }
 
 interface Package {

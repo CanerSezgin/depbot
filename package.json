@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "tsc && node dist/server.js",
     "test": "jest",
     "lint:tsc": "tsc",
     "lint:eslint": "eslint 'src/**/*.ts'",

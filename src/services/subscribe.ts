@@ -1,15 +1,18 @@
-import { Record, RecordDoc } from '../models/Record';
+import { Subscription, SubscriptionDoc } from '../models/Subcription';
 import BadRequestError from '../utils/errors/bad-request-error';
 import ConflictError from '../utils/errors/conflict-error';
 
-const recordService = {
-  async get(email: string, repo: string): Promise<RecordDoc | null> {
-    return Record.findOne({ email, repo });
+const subscribeService = {
+  async get(email: string, repo: string): Promise<SubscriptionDoc | null> {
+    return Subscription.findOne({ email, repo });
   },
-  async create(email: string, repo: string): Promise<RecordDoc> {
-    const record = Record.build({ email, repo });
+  async getByDayMin(dayMinTime: number) {
+    return Subscription.find({ dayMinTime });
+  },
+  async create(email: string, repo: string): Promise<SubscriptionDoc> {
+    const subscription = Subscription.build({ email, repo });
     try {
-      await record.save();
+      await subscription.save();
     } catch (error) {
       /* Enhancement Point: 
          Need better error handling for mongoose errors, ignored for the sake of simplicity.
@@ -20,12 +23,8 @@ const recordService = {
         throw new BadRequestError(error.message);
       }
     }
-    return record;
+    return subscription;
   },
 };
 
-/* export const getUserByEmail = async (email: string) => {
-  return User.findOne({ email });
-}; */
-
-export default recordService;
+export default subscribeService;

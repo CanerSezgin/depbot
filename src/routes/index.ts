@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 // Routes
-import recordRoute from './record.route';
+import repoRoute from './repo.route';
 
 interface Route {
   path: string;
@@ -23,13 +23,13 @@ const setRoutes = (routes: Route[]) => {
 
 const defaultRoutes: Route[] = [
   {
-    path: '/record',
-    route: recordRoute,
+    path: '/repo',
+    route: repoRoute,
   },
   /*   {
-    path: '/user',
-    route: userRoute,
-    middlewares: [authCheck],
+    path: '/route',
+    route: routeFile,
+    middlewares: [middleware],
   }, */
 ];
 

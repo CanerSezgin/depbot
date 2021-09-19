@@ -18,7 +18,8 @@ export default class Dependency {
   }
 
   static async getDependencyDetails(key: string, registry: Registry) {
-    return cached({ key: `package_${key}`, expire: 50 }, getPackage, [key, registry]);
+    const expireIn = 60 * 60; // 1hr
+    return cached({ key: `package_${key}`, expire: expireIn }, getPackage, [key, registry]);
   }
 
   static checkVersions(latestVersion: string, currentVersion: string): boolean {

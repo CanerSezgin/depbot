@@ -1,4 +1,6 @@
 export default class Gitlab {
+  readonly name = 'gitlab';
+
   async getFileFromGitlab(
     repo: string,
     filePath: string,

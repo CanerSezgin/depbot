@@ -14,10 +14,7 @@ export const cached = async <T>(
   const cachedData = await redis.getAsync(cacheConfig.key);
 
   if (cachedData) {
-    console.log('reading from cache ...');
     return JSON.parse(cachedData) as T;
-  } else {
-    console.log('Getting Data from Service (Run CB)');
   }
 
   const data = await cb(...args);
