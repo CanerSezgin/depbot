@@ -49,7 +49,3 @@
 
 - Make sure you are setting password: `-e REDIS_PASSWORD=password123`
 - Data Persistence: `-v ~/docker/volumes/redis:/bitnami/redis/data`
-
-#### General
-
-- `Restart Always` is suggested if you are not using an orchestration system: `--restart always`
